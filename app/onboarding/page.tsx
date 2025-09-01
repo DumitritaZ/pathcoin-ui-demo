@@ -1,11 +1,12 @@
 "use client";
 
-import { AppBg } from "@/components/AppBg";
-import OnboardingPager from "@/components/OnboardingPager";
-import OnboardingSlide from "@/components/OnboardingSlide";
-import { setOnboarded } from "@/lib/onboarding";
+
+import { AppBg } from "../../components/AppBg";
+import OnboardingPager from "../../components/OnboardingPager";
+import OnboardingSlide from "../../components/OnboardingSlide";
+import { setOnboarded } from "../../lib/onboarding";
 import { useRouter } from "next/navigation";
-import { orbitron } from "@/lib/fonts";
+import { orbitron } from "../../lib/fonts";
 
 function GlowCoin() {
   return (
