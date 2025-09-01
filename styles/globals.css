@@ -1,0 +1,475 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+body { @apply min-h-screen bg-gradient-to-b from-bg1 to-bg2 text-white antialiased; }
+
+/* glass exact ca în mock: blur mare, contur 1px, interior întunecat */
+.glass {
+  @apply backdrop-blur-2xl border border-white/10 bg-[rgba(10,20,35,.35)] shadow-card;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 18px 50px rgba(0,0,0,.45);
+}
+
+/* CTA pastilă cyan→blue + halo */
+.cta {
+  @apply relative w-full py-4 rounded-[28px] font-semibold text-white
+         bg-gradient-to-r from-[#24ECFF] via-[#17E2FF] to-[#5A78FF];
+  box-shadow: 0 22px 38px rgba(0,214,255,.35);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.cta:before{
+  content:""; position:absolute; inset:-2px; border-radius:28px;
+  background: radial-gradient(60% 100% at 50% 100%, rgba(0,214,255,.55), transparent 70%);
+  filter: blur(10px); z-index:-1;
+}
+
+/* indicator sub icon activ */
+.dot {
+  position:absolute; bottom:-10px; width:7px; height:7px; border-radius:9999px;
+  background:#00E5FF; box-shadow:0 0 18px rgba(0,229,255,.9);
+}
+
+/* container “telefon” */
+.mobile { width: 390px; max-width: 92vw; }
+
+/* harta să se piardă în fundal, nu margini dure */
+.mask-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.55) 10%, black 30%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.55) 10%, black 30%, black 80%, transparent 100%);
+}
+
+/* buton cyan->blue (fără violet) + halou moale */
+.cta {
+  @apply relative w-full py-4 rounded-[28px] font-semibold text-white;
+  background-image: linear-gradient(90deg, #24ECFF, #2D7CFF);
+  box-shadow: 0 22px 38px rgba(0,214,255,.35);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.cta:before {
+  content:""; position:absolute; inset:-2px; border-radius:28px;
+  background: radial-gradient(60% 100% at 50% 100%, rgba(0,214,255,.55), transparent 70%);
+  filter: blur(14px); z-index:-1;
+}
+
+/* =============== ANIMS SVG =============== */
+@keyframes dash {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -320; }
+}
+@keyframes shimmer {
+  0%,100% { opacity: .18; }
+  50%     { opacity: .36; }
+}
+@keyframes pulse {
+  0%   { transform: scale(1);   opacity: .9; }
+  70%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.flow   { animation: dash 6s linear infinite; }
+.shine  { animation: shimmer 4s ease-in-out infinite; }
+.pulse  { transform-origin: center; animation: pulse 2.6s ease-out infinite; }
+
+/* parallax container */
+.parallax {
+  perspective: 800px;
+  --rx: 0;
+  --ry: 0;
+}
+.parallax > .layer {
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .08s linear;
+}
+
+/* CTA feedback */
+.cta:active { transform: scale(.98); }
+
+/* ==== FEATURED ROUTE – NEON GLASS ==== */
+@keyframes sweep {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  20%  { opacity: .35; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
+.card-neon {
+  position: relative;
+  border-radius: 22px;
+  padding: 14px 16px;
+  background: rgba(8,16,30,0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 18px 50px rgba(0,0,0,0.45);
+  transition: box-shadow .25s ease, transform .2s ease, border-color .2s ease;
+}
+
+/* gradient border subtil (nu kitsch) */
+.card-neon::before {
+  content: "";
+  position: absolute; inset: 0; border-radius: 22px; padding: 1px;
+  background: linear-gradient(135deg, rgba(0,229,255,.35), rgba(58,107,255,.28));
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+/* sweep shine */
+.card-neon::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+  border-radius: 22px;
+  left: -40%;
+  pointer-events: none;
+}
+
+/* hover/press effects */
+.card-neon:hover {
+  box-shadow:
+    0 0 22px rgba(0,229,255,.18),
+    0 18px 50px rgba(0,0,0,0.45);
+  border-color: rgba(0,229,255,.25);
+}
+.card-neon:hover::after { animation: sweep 1s ease forwards; }
+.card-neon:active { transform: translateY(1px) scale(0.995); }
+
+/* mic “LED” pe stânga */
+.card-led {
+  position: relative;
+  padding-left: 36px;
+}
+.card-led::before {
+  content: "";
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 8px; height: 8px; border-radius: 9999px;
+  background: #00E5FF;
+  box-shadow: 0 0 10px rgba(0,229,255,.9), 0 0 30px rgba(0,229,255,.5);
+}
+ /* ======= BRAND NEON: PathCoin ======= */
+@keyframes brandHue {
+  0% { filter: drop-shadow(0 0 10px rgba(0,229,255,.55)); }
+  50% { filter: drop-shadow(0 0 18px rgba(160,32,240,.45)); }
+  100% { filter: drop-shadow(0 0 10px rgba(57,255,20,.55)); }
+}
+@keyframes brandSweep {
+  0%   { transform: translateX(-130%); opacity: 0; }
+  20%  { opacity: .35; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
+
+/* wrapper ca să putem anima un "shine" peste text */
+.brand-wrap {
+  position: relative;
+  display: inline-block;
+  padding-right: 12px; /* spațiu pentru efect */
+}
+
+/* text neon cu gradient în literă + glow animat */
+.brand-neon {
+  font-weight: 900;
+  letter-spacing: .5px;
+  font-size: 26px;              /* mai mare ca “micuțul” inițial */
+  line-height: 1.1;
+  background: linear-gradient(90deg, #24ECFF, #A020F0, #39FF14);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;            /* gradient în literă */
+  text-shadow:
+    0 0 1px rgba(255,255,255,.25),
+    0 0 12px rgba(0,229,255,.35);
+  animation: brandHue 4.5s ease-in-out infinite alternate;
+}
+
+/* “shadow/shine” mobil peste text */
+.brand-wrap::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent,
+            rgba(255,255,255,.12), transparent);
+  mix-blend-mode: screen;
+  transform: translateX(-130%);
+  animation: brandSweep 1.6s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 6px;
+}
+@keyframes brandHue {
+  0%   { filter: drop-shadow(0 0 10px rgba(0,229,255,.55)); }
+  50%  { filter: drop-shadow(0 0 16px rgba(160,32,240,.55)); }
+  100% { filter: drop-shadow(0 0 12px rgba(57,255,20,.55)); }
+}
+@keyframes brandSweep {
+  0%   { transform: translateX(-130%); opacity: 0; }
+  20%  { opacity: .4; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
+
+.brand-wrap {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.brand-neon {
+  font-weight: 900;
+  font-size: 34px;             /* mare, vizibil */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #24ECFF, #A020F0, #39FF14);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 2px rgba(255,255,255,.3),
+    0 0 12px rgba(0,229,255,.35);
+  animation: brandHue 4.5s ease-in-out infinite alternate;
+  font-family: 'Orbitron', sans-serif;   /* FONT GAMING */
+}
+
+.brand-wrap::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent,
+            rgba(255,255,255,.15), transparent);
+  mix-blend-mode: screen;
+  transform: translateX(-130%);
+  animation: brandSweep 2s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+@keyframes coinPulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .95; }
+  50%     { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+}
+@keyframes coinFloat {
+  from { transform: translate(-50%,-120%); opacity: 1; }
+  to   { transform: translate(-50%,-180%); opacity: 0; }
+}
+
+/* buton monedă neon (tap target ~36px) */
+.coin{
+  position:absolute; width:36px; height:36px; border-radius:9999px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 35%, #24ECFF 0%, #2D7CFF 65%, rgba(0,0,0,0) 66%);
+  box-shadow:
+    0 0 14px rgba(36,236,255,.65),
+    0 0 34px rgba(45,124,255,.45);
+  border: 1px solid rgba(255,255,255,.12);
+  animation: coinPulse 1.6s ease-in-out infinite;
+}
+.coin::after{
+  content:""; position:absolute; inset:-12px; border-radius:9999px;
+  background: radial-
+  gradient(circle, rgba(36,236,255,.25), transparent 70%);
+  filter: blur(6px);
+}
+
+/* --- coins --- */
+@keyframes coinPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.95}
+ 50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}}
+@keyframes coinFloat { from{transform:translate(-50%,-120%);opacity:1}
+ to{transform:translate(-50%,-180%);opacity:0}}
+@keyframes coinPop { from{transform:translate(-50%,-50%) scale(.6);opacity:0}
+ to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+
+.coin{position:absolute;width:38px;height:38px;border-radius:9999px;
+  transform:translate(-50%,-50%); border:1px solid rgba(255,255,255,.12);
+  animation:coinPulse 1.6s ease-in-out infinite, coinPop .18s ease-out 1}
+.coin.pretty{
+  background: radial-gradient(40% 40% at 35% 35%, #24ECFF 0%, #2D7CFF 65%, rgba(0,0,0,0) 66%);
+  box-shadow:0 0 16px rgba(36,236,255,.65),0 0 38px rgba(45,124,255,.45);
+}
+.coin.pretty::before{ /* inel interior */
+  content:"";position:absolute;inset:6px;border-radius:9999px;
+  border:2px solid rgba(36,236,255,.35); filter:blur(.2px)
+}
+.coin.pretty::after{ /* halo exterior */
+  content:"";position:absolute;inset:-12px;border-radius:9999px;
+  background:radial-gradient(circle, rgba(36,236,255,.25), transparent 70%);
+  filter:blur(8px)
+}
+
+.coin-spark{
+  position:absolute;width:6px;height:6px;border-radius:9999px;
+  background:radial-gradient(circle, #24ECFF, #2D7CFF);
+  transform:translate(-50%,-50%);opacity:1;
+  animation: spark .5s ease-out forwards;
+}
+@keyframes spark{
+  to{ transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))); opacity:0 }
+}
+
+/* --- HUD pills --- */
+.hud-pill{
+  display:flex; align-items:center; gap:.5rem;
+  padding:.55rem .9rem; border-radius:14px;
+  background: rgba(8,16,30,.25); backdrop-filter: blur(12px);
+  border:1px solid rgba(255,255,255,.12);
+  color:#cde3ff; font-weight:600; font-size:13px;
+}
+.hud-pill span{ color:#fff; font-size:18px; font-weight:800; margin-left:.25rem }
+
+/* sub-pill de info */
+.subpill{
+  padding:.6rem .9rem; border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  color:#d8e6ff; font-size:13px;
+}
+
+/* --- BOARD --- */
+.board{
+  display:grid; grid-template-columns: repeat(8, 1fr);
+  gap:10px; padding:14px; border-radius:20px;
+  background: rgba(8,16,30,.28);
+  backdrop-filter: blur(16px);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 20px 50px rgba(0,0,0,.35);
+}
+
+/* celule */
+.tile{
+  position:relative; height:56px; border-radius:12px;
+  background: linear-gradient(180deg, rgba(20,26,40,.85), rgba(14,20,34,.85));
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+  display:flex; align-items:center; justify-content:center;
+  color:#9ad7ff; font-weight:700;
+}
+.tile.me{
+  outline:2px solid #24ECFF; box-shadow: 0 0 16px rgba(36,236,255,.4);
+}
+.tile.coin .ico{ color:#39FFB0; }
+.tile.energy .ico{ color:#24ECFF; }
+.tile.exit .badge{
+  font-weight:800; color:#E9F1FF;
+}
+.tile.wall{ background: linear-gradient(180deg, #1b1f2b, #151b28); color:#d46aff; }
+.tile.start .badge{ color:#BDE9FF; }
+
+.ico{ font-size:20px; }
+.badge{ font-size:14px; letter-spacing:.5px }
+
+/* --- Controls --- */
+.controls{ display:flex; gap:.6rem; }
+.btn{
+  flex:1; padding:.95rem 1rem; border-radius:16px;
+  text-align:center; font-weight:700; color:white; border:1px solid rgba(255,255,255,.08);
+}
+.glass-ghost{ background: rgba(8,16,30,.28); backdrop-filter: blur(10px); }
+.finish{
+  background: linear-gradient(90deg, #ff6aa2, #ff5b5b);
+  box-shadow: 0 14px 38px rgba(255,0,90,.25);
+}
+.cta{
+  background-image: linear-gradient(90deg, #24ECFF, #2D7CFF);
+  box-shadow: 0 22px 38px rgba(0,214,255,.35);
+}
+
+/* tip bar */
+.tip{ padding:.8rem 1rem; border-radius:14px; border:1px solid rgba(255,255,255,.08); color:#e7eefc }
+
+.neon-btn {
+  background: linear-gradient(90deg, #24ECFF, #8E2DFF, #39FFB0);
+  background-size: 300% 300%;
+  animation: neonShift 6s ease infinite;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 0 12px rgba(36,236,255,.5),
+              0 0 24px rgba(142,45,255,.3),
+              0 0 36px rgba(57,255,176,.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.neon-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 20px rgba(36,236,255,.7),
+              0 0 40px rgba(142,45,255,.5),
+              0 0 60px rgba(57,255,176,.4);
+}
+@keyframes neonShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* glass util (dacă nu îl ai deja) */
+.glass{
+  background: rgba(8,16,30,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 20px 50px rgba(0,0,0,.35);
+}
+
+/* chip-uri */
+.chip{
+  padding: .6rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: white;
+}
+
+/* neon button reutilizabil (ai și la Routes) */
+.neon-btn {
+  background: linear-gradient(90deg, #24ECFF, #8E2DFF, #39FFB0);
+  background-size: 300% 300%;
+  animation: neonShift 6s ease infinite;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 0 12px rgba(36,236,255,.5),
+              0 0 24px rgba(142,45,255,.3),
+              0 0 36px rgba(57,255,176,.25);
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.neon-btn:hover{
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 20px rgba(36,236,255,.7),
+              0 0 40px rgba(142,45,255,.5),
+              0 0 60px rgba(57,255,176,.4);
+}
+@keyframes neonShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* dots pentru lista de tranzacții */
+.dot{ width:18px; height:18px; border-radius:9999px; display:inline-block; box-shadow:0 0 10px currentColor }
+.dot.cyan{ background:#24ECFF; color:#24ECFF }
+.dot.green{ background:#39FFB0; color:#39FFB0 }
+.dot.purple{ background:#8E2DFF; color:#8E2DFF }
+
+/* Neon ring animat pentru avatar */
+.neon-ring {
+  background: conic-gradient(from 0deg,
+    #24ECFF, #8E2DFF, #39FFB0, #24ECFF);
+  animation: spinHue 6s linear infinite;
+  border-radius: 9999px;
+  padding: 8px; /* spațiu inel */
+  box-shadow:
+    0 0 12px rgba(36,236,255,.5),
+    0 0 24px rgba(142,45,255,.35),
+    0 0 36px rgba(57,255,176,.25);
+}
+@keyframes spinHue { to { transform: rotate(360deg); } }
+
+/* util glass (dacă nu îl ai) */
+.glass{
+  background: rgba(8,16,30,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 20px 50px rgba(0,0,0,.35);
+}
+.btn-disabled { opacity:.6; filter:saturate(.6); pointer-events:none }
+
+
+:root{
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+.mobile{ padding-top: max(1rem, var(--safe-top)); padding-bottom: max(1rem, var(--safe-bottom)); }
+.tabbar-safe{ padding-bottom: max(12px, var(--safe-bottom)); }
+
+html, body { -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+button, a { touch-action: manipulation; cursor: pointer; }
+
+
